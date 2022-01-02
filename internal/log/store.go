@@ -18,8 +18,8 @@ const (
 
 type store struct {
 	*os.File
-	mu sync.Mutex
-	buf *bufio.Writer
+	mu   sync.Mutex
+	buf  *bufio.Writer
 	size uint64
 }
 
@@ -33,7 +33,7 @@ func newStore(f *os.File) (*store, error) {
 	return &store{
 		File: f,
 		size: size,
-		buf: bufio.NewWriter(f),
+		buf:  bufio.NewWriter(f),
 	}, nil
 }
 
@@ -78,7 +78,7 @@ func (s *store) Read(pos uint64) ([]byte, error) {
 	return b, nil
 }
 
-func (s *store) ReadAt(p []byte, off int64) (int ,error) {
+func (s *store) ReadAt(p []byte, off int64) (int, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if err := s.buf.Flush(); err != nil {

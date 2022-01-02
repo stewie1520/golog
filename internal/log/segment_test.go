@@ -13,9 +13,9 @@ func TestSegment(t *testing.T) {
 	dir, _ := ioutil.TempDir("", "segment-test")
 	defer os.RemoveAll(dir)
 
-	want := &api.Record{ Value: []byte("Hello World") }
+	want := &api.Record{Value: []byte("Hello World")}
 
-	c := Config {}
+	c := Config{}
 	c.Segment.MaxStoreBytes = 1024
 	c.Segment.MaxIndexBytes = entWidth * 3
 

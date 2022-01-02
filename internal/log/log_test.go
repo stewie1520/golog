@@ -1,20 +1,21 @@
 package log
 
 import (
-	"github.com/golang/protobuf/proto"
-	api "github.com/stewie1520/api/v1"
-	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/golang/protobuf/proto"
+	api "github.com/stewie1520/api/v1"
+	"github.com/stretchr/testify/require"
 )
 
 func TestLog(t *testing.T) {
-	for scenario, fn := range map[string]func (t *testing.T, l *Log) {
+	for scenario, fn := range map[string]func(t *testing.T, l *Log){
 		"append and read a record succeeds": testAppendRead,
-		"offset out of range error": testOutOfRangeErr,
-		"init with existing segments": testInitExisting,
-		"reader": testReader,
+		"offset out of range error":         testOutOfRangeErr,
+		"init with existing segments":       testInitExisting,
+		"reader":                            testReader,
 	} {
 		t.Run(scenario, func(t *testing.T) {
 			dir, err := ioutil.TempDir("", "store-test")
@@ -80,7 +81,8 @@ func testInitExisting(t *testing.T, l *Log) {
 func testOutOfRangeErr(t *testing.T, l *Log) {
 	read, err := l.Read(1)
 	require.Nil(t, read)
-	require.Error(t, err)
+	apiErr := err.(api.ErrOffsetOutOfRange)
+	require.Equal(t, uint64(1), apiErr.Offset)
 }
 
 func testAppendRead(t *testing.T, l *Log) {
@@ -96,5 +98,3 @@ func testAppendRead(t *testing.T, l *Log) {
 	require.NoError(t, err)
 	require.Equal(t, append.Value, read.Value)
 }
-
-

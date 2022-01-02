@@ -29,7 +29,7 @@ func TestStoreAppendRead(t *testing.T) {
 	testRead(t, s)
 }
 
-func testAppend(t *testing.T, s *store)  {
+func testAppend(t *testing.T, s *store) {
 	t.Helper()
 	for i := uint64(1); i < 4; i++ {
 		n, pos, err := s.Append(write)

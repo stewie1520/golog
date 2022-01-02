@@ -79,8 +79,8 @@ func (i *index) Read(in int64) (out uint32, pos uint64, err error) {
 		return 0, 0, io.EOF
 	}
 
-	out = enc.Uint32(i.mmap[pos:pos+offWidth])
-	pos = enc.Uint64(i.mmap[pos+offWidth:pos+entWidth])
+	out = enc.Uint32(i.mmap[pos : pos+offWidth])
+	pos = enc.Uint64(i.mmap[pos+offWidth : pos+entWidth])
 
 	return out, pos, nil
 }

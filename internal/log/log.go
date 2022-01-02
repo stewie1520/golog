@@ -1,8 +1,6 @@
 package log
 
 import (
-	"fmt"
-	api "github.com/stewie1520/api/v1"
 	"io"
 	"io/ioutil"
 	"os"
@@ -11,16 +9,18 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	api "github.com/stewie1520/api/v1"
 )
 
 type Log struct {
 	mu sync.RWMutex
 
-	Dir string
+	Dir    string
 	Config Config
 
 	activeSegment *segment
-	segments []*segment
+	segments      []*segment
 }
 
 func NewLog(dir string, c Config) (*Log, error) {
@@ -33,7 +33,7 @@ func NewLog(dir string, c Config) (*Log, error) {
 	}
 
 	l := &Log{
-		Dir: dir,
+		Dir:    dir,
 		Config: c,
 	}
 
@@ -112,14 +112,14 @@ func (l *Log) Read(off uint64) (*api.Record, error) {
 
 	var s *segment
 	for _, segment := range l.segments {
-		if segment.baseOffset <= off || off < segment.nextOffset {
+		if segment.baseOffset <= off && off < segment.nextOffset {
 			s = segment
 			break
 		}
 	}
 
-	if s == nil && s.nextOffset <= off {
-		return nil, fmt.Errorf("offset out of range: %d", off)
+	if s == nil || s.nextOffset <= off {
+		return nil, api.ErrOffsetOutOfRange{Offset: off}
 	}
 
 	return s.Read(off)
@@ -154,7 +154,7 @@ func (l *Log) Reset() error {
 	return l.setup()
 }
 
-func (l *Log) LowestOffset() (uint64, error)  {
+func (l *Log) LowestOffset() (uint64, error) {
 	l.mu.RLock()
 	defer l.mu.RUnlock()
 	return l.segments[0].baseOffset, nil
@@ -163,7 +163,7 @@ func (l *Log) LowestOffset() (uint64, error)  {
 func (l *Log) HighestOffset() (uint64, error) {
 	l.mu.RLock()
 	defer l.mu.RUnlock()
-	off := l.segments[len(l.segments) - 1].nextOffset
+	off := l.segments[len(l.segments)-1].nextOffset
 	if off == 0 {
 		return 0, nil
 	}

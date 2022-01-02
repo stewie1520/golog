@@ -21,10 +21,10 @@ func TestIndex(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, f.Name(), idx.Name())
 
-	entries := []struct{
+	entries := []struct {
 		Off uint32
 		Pos uint64
-	} {
+	}{
 		{Off: 0, Pos: 0},
 		{Off: 1, Pos: 10},
 	}

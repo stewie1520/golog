@@ -1,11 +1,12 @@
 compile:
 	protoc api/v1/*.proto \
 		--go_out=. \
+		--go-grpc_out=. \
 		--go_opt=paths=source_relative \
-		--proto_path=. \
-		--plugin=protoc-gen-go="/home/hieudong/go/bin/protoc-gen-go"
+		--go-grpc_opt=paths=source_relative \
+		--proto_path=.
 test:
-	go test -race ./...
+	go test -race -cover ./...
 
 play:
 	go run ./cmd/server/main.go
