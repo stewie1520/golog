@@ -3,7 +3,7 @@ package log
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
-	api "github.com/stewie1520/api/v1"
+	api "github.com/stewie1520/golog/api/v1"
 	"os"
 	"path"
 )

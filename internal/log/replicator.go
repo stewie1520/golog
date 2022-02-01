@@ -2,7 +2,7 @@ package log
 
 import (
 	"context"
-	api "github.com/stewie1520/api/v1"
+	api "github.com/stewie1520/golog/api/v1"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"sync"

@@ -20,7 +20,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	api "github.com/stewie1520/api/v1"
+	api "github.com/stewie1520/golog/api/v1"
 	"google.golang.org/grpc"
 )
 

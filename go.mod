@@ -1,4 +1,4 @@
-module github.com/stewie1520
+module github.com/stewie1520/golog
 
 go 1.17
 

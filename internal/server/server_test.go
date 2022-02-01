@@ -9,16 +9,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stewie1520/internal/auth"
-	"github.com/stewie1520/internal/config"
+	"github.com/stewie1520/golog/internal/auth"
+	"github.com/stewie1520/golog/internal/config"
 	"go.opencensus.io/examples/exporter"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/status"
 
-	api "github.com/stewie1520/api/v1"
-	"github.com/stewie1520/internal/log"
+	api "github.com/stewie1520/golog/api/v1"
+	"github.com/stewie1520/golog/internal/log"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 )

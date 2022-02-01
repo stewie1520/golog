@@ -10,7 +10,7 @@ import (
 	"strings"
 	"sync"
 
-	api "github.com/stewie1520/api/v1"
+	api "github.com/stewie1520/golog/api/v1"
 )
 
 type Log struct {

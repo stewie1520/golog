@@ -1,11 +1,11 @@
 package agent
 
 import (
-	api "github.com/stewie1520/api/v1"
-	"github.com/stewie1520/internal/auth"
-	"github.com/stewie1520/internal/discovery"
-	"github.com/stewie1520/internal/log"
-	"github.com/stewie1520/internal/server"
+	api "github.com/stewie1520/golog/api/v1"
+	"github.com/stewie1520/golog/internal/auth"
+	"github.com/stewie1520/golog/internal/discovery"
+	"github.com/stewie1520/golog/internal/log"
+	"github.com/stewie1520/golog/internal/server"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
