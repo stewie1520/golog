@@ -1,3 +1,7 @@
+all: init gencert compile test play
+
+.PHONY: all
+
 CONFIG_PATH=${HOME}/.proglog/
 
 $(CONFIG_PATH)/model.conf:
@@ -6,11 +10,9 @@ $(CONFIG_PATH)/model.conf:
 $(CONFIG_PATH)/policy.csv:
 	cp test/policy.csv $(CONFIG_PATH)/policy.csv
 
-.PHONY: init
 init:
 	mkdir -p ${CONFIG_PATH}
 
-.PHONY: gencert
 gencert:
 	cfssl gencert \
 		-initca test/ca-csr.json | cfssljson -bare ca
@@ -44,7 +46,6 @@ compile:
 		--go-grpc_opt=paths=source_relative \
 		--proto_path=.
 
-.PHONY: test
 test:  $(CONFIG_PATH)policy.csv $(CONFIG_PATH)model.conf
 	 go test -race -cover ./...
 
