@@ -4,13 +4,12 @@ import (
 	api "github.com/stewie1520/golog/api/v1"
 	"github.com/stretchr/testify/require"
 	"io"
-	"io/ioutil"
 	"os"
 	"testing"
 )
 
 func TestSegment(t *testing.T) {
-	dir, _ := ioutil.TempDir("", "segment-test")
+	dir, _ := os.MkdirTemp("", "segment-test")
 	defer os.RemoveAll(dir)
 
 	want := &api.Record{Value: []byte("Hello World")}

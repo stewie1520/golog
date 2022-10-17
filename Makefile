@@ -13,6 +13,9 @@ $(CONFIG_PATH)/policy.csv:
 init:
 	mkdir -p ${CONFIG_PATH}
 
+lint:
+	golangci-lint run
+
 gencert:
 	cfssl gencert \
 		-initca test/ca-csr.json | cfssljson -bare ca

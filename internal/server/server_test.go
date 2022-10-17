@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"flag"
-	"io/ioutil"
 	"net"
 	"os"
 	"testing"
@@ -157,7 +156,7 @@ func setupTest(t *testing.T, fn func(*Config)) (root, nobody api.LogClient, cfg 
 	require.NoError(t, err)
 	serverCreds := credentials.NewTLS(serverTLSConfig)
 
-	dir, err := ioutil.TempDir("", "server-test")
+	dir, err := os.MkdirTemp("", "server-test")
 	require.NoError(t, err)
 
 	clog, err := log.NewLog(dir, log.Config{})
@@ -166,11 +165,11 @@ func setupTest(t *testing.T, fn func(*Config)) (root, nobody api.LogClient, cfg 
 
 	var telemetryExporter *exporter.LogExporter
 	if *debug {
-		metricsLogFile, err := ioutil.TempFile("", "metrics-*.log")
+		metricsLogFile, err := os.CreateTemp("", "metrics-*.log")
 		require.NoError(t, err)
 		t.Logf("metrics log file: %s", metricsLogFile.Name())
 
-		tracesLogFile, err := ioutil.TempFile("", "traces-*.log")
+		tracesLogFile, err := os.CreateTemp("", "traces-*.log")
 		require.NoError(t, err)
 		t.Logf("traces log file: %s", tracesLogFile.Name())
 
@@ -198,15 +197,30 @@ func setupTest(t *testing.T, fn func(*Config)) (root, nobody api.LogClient, cfg 
 	require.NoError(t, err)
 
 	go func() {
-		server.Serve(l)
+		err := server.Serve(l)
+		if err != nil {
+			return
+		}
 	}()
 
 	return rootClient, nobodyClient, cfg, func() {
 		server.Stop()
-		rootConn.Close()
-		nobodyConn.Close()
-		l.Close()
-		clog.Remove()
+		err := rootConn.Close()
+		if err != nil {
+			return
+		}
+		err = nobodyConn.Close()
+		if err != nil {
+			return
+		}
+		err = l.Close()
+		if err != nil {
+			return
+		}
+		err = clog.Remove()
+		if err != nil {
+			return
+		}
 		if telemetryExporter != nil {
 			time.Sleep(1500 * time.Millisecond)
 			telemetryExporter.Stop()

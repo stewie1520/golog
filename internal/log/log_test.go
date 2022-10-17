@@ -1,13 +1,13 @@
 package log
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 	"testing"
 
-	"github.com/golang/protobuf/proto"
 	api "github.com/stewie1520/golog/api/v1"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestLog(t *testing.T) {
@@ -18,7 +18,7 @@ func TestLog(t *testing.T) {
 		"reader":                            testReader,
 	} {
 		t.Run(scenario, func(t *testing.T) {
-			dir, err := ioutil.TempDir("", "store-test")
+			dir, err := os.MkdirTemp("", "store-test")
 			require.NoError(t, err)
 			defer os.RemoveAll(dir)
 			c := Config{}
@@ -40,7 +40,7 @@ func testReader(t *testing.T, l *Log) {
 	require.Equal(t, uint64(0), off)
 
 	reader := l.Reader()
-	b, err := ioutil.ReadAll(reader)
+	b, err := io.ReadAll(reader)
 	require.NoError(t, err)
 
 	read := &api.Record{}
